@@ -1,0 +1,25 @@
+#!/usr/bin/env ruby
+
+ROCKBUILD_PATH = File.join(File.dirname(__FILE__), *%w{ .. lib })
+
+$LOAD_PATH.unshift(ROCKBUILD_PATH)
+
+require 'rubygems'
+require 'commander/import'
+require 'commands'
+
+program :name, 'Rockbuild'
+program :version, '0.0.99'
+program :description, 'Build tools for mono related projects.'
+
+global_option('-p', '--package', 'Produce a package for the selected profile')
+
+command :build do |c|
+  c.syntax = 'rockbuild build [options] [profile]'
+  c.description = 'Build a profile, if none specified, try to match the one on the current dir'
+  c.action do |args, options|
+    RockBuild::Commands::Build.process(args, options)
+  end
+end
+
+default_command :help
